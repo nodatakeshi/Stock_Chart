@@ -11,7 +11,7 @@ def get_all_jpx_stocks():
     # Streamlit Cloudに上げる際は、GitHubにjpx_stocks.csvを置いてパスを合わせます
     # ローカルやColabの場合は適切なパスに変更してください
     try:
-        df = pd.read_csv("/content/drive/MyDrive/Colab Notebooks/jpx_stocks.csv",encoding="shift_jis") 
+        df = pd.read_csv("jpx_stocks.csv",encoding="shift_jis") 
         # 表示用のラベル「8306 三菱UFJ銀行」を作成
         df["display_name"] = df["コード"].astype(str) + " " + df["銘柄名"]
         return df
