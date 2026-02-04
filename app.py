@@ -11,7 +11,7 @@ def get_all_jpx_stocks():
     # Streamlit Cloudに上げる際は、GitHubにjpx_stocks.csvを置いてパスを合わせます
     # ローカルやColabの場合は適切なパスに変更してください
     try:
-        df = pd.read_csv("jpx_stocks.csv",encoding="shift_jis") 
+        df = pd.read_csv("/content/drive/MyDrive/Colab Notebooks/jpx_stocks.csv",encoding="shift_jis")
         # 表示用のラベル「8306 三菱UFJ銀行」を作成
         df["display_name"] = df["コード"].astype(str) + " " + df["銘柄名"]
         return df
@@ -33,12 +33,12 @@ st.markdown("### 📈 株価チャート")
 # --- 2. サイドバー設定 ---
 with st.sidebar:
     st.header("表示設定")
-    
+
     # 4000銘柄から検索して選択
     default_codes = ["8306", "1802","2914","5334"]
     selected_labels = st.multiselect(
-        "銘柄を検索・選択", 
-        options=df_master["display_name"].tolist(), 
+        "銘柄を検索・選択",
+        options=df_master["display_name"].tolist(),
         default=[l for l in df_master["display_name"] if any(code in l for code in default_codes)]
     )
 
@@ -125,7 +125,7 @@ if selected_names or selected_benchmarks:
   # --- グラフ装飾（ダークモード設定） ---
     fig.patch.set_facecolor('#0E1117') # 外側の背景色
     ax.set_facecolor('#0E1117')        # 内側の背景色
-    
+
     # 軸のラベルや目盛りの色を白にする
     ax.xaxis.label.set_color('white')
     ax.yaxis.label.set_color('white')
@@ -136,7 +136,7 @@ if selected_names or selected_benchmarks:
     ax.set_ylabel("値 (規格化)" if normalize else "価格")
     ax.grid(True, linestyle=':', alpha=0.3, color='gray') # グリッドを少し暗めに
     ax.tick_params(labelleft=True, labelright=True, left=True, right=True)
-    
+
     # 凡例の文字色も白にする
     leg = ax.legend(loc='upper center', bbox_to_anchor=(0.5, 1.15), ncol=3, frameon=False)
     for text in leg.get_texts():
@@ -158,10 +158,11 @@ if selected_names and not df_stocks.empty:
         if len(series) >= 2:
             latest = series.iloc[-1]
             prev = series.iloc[-2]
+            latest_date = series.index[-1].strftime('%m/%d')
             change = latest - prev
             pct = (change / prev) * 100
             with cols_s[i % 3]:
-                st.metric(label=name, value=f"{latest:,.1f}円", delta=f"{change:,.1f}円 ({pct:+.2f}%)")
+                st.metric(label=f"{name} ({latest_date})", value=f"{latest:,.1f}円", delta=f"{change:,.1f}円 ({pct:+.2f}%)")
 
 # 2. ベンチマークの表示 (追加部分)
 if selected_benchmarks:
@@ -174,8 +175,9 @@ if selected_benchmarks:
         if len(bench_series) >= 2:
             latest = bench_series.iloc[-1]
             prev = bench_series.iloc[-2]
+            latest_date = bench_series.index[-1].strftime('%m/%d')
             change = latest - prev
             pct = (change / prev) * 100
             with cols_b[i % 3]:
                 # ベンチマークは円単位ではないものもあるので単位なしで表示
-                st.metric(label=name, value=f"{latest:,.1f}", delta=f"{change:,.1f} ({pct:+.2f}%)")
+                st.metric(label=f"{name} ({latest_date})", value=f"{latest:,.1f}", delta=f"{change:,.1f} ({pct:+.2f}%)")
