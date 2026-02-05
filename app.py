@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import japanize_matplotlib
 from datetime import datetime
 
+st.set_page_config(layout="wide")
+
 # --- 1. 全銘柄リストの取得 ---
 @st.cache_data
 def get_all_jpx_stocks():
