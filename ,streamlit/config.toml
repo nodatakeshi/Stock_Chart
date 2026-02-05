@@ -7,6 +7,3 @@ font = "sans serif"
 base = "dark"
 [ui]
 wideMode = true
-[server]
-# 開発中にファイルを保存したら自動でブラウザを更新する
-runOnSave = true
