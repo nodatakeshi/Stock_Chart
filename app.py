@@ -8,16 +8,18 @@ from datetime import datetime
 # --- 1. 全銘柄リストの取得 ---
 @st.cache_data
 def get_all_jpx_stocks():
-    # Streamlit Cloudに上げる際は、GitHubにjpx_stocks.csvを置いてパスを合わせます
-    # ローカルやColabの場合は適切なパスに変更してください
-    try:
-        df = pd.read_csv("/content/drive/MyDrive/Colab Notebooks/jpx_stocks.csv",encoding="shift_jis")
-        # 表示用のラベル「8306 三菱UFJ銀行」を作成
-        df["display_name"] = df["コード"].astype(str) + " " + df["銘柄名"]
-        return df
-    except:
-        # 万が一CSVがない場合の予備
-        return pd.DataFrame({"コード": [8306], "銘柄名": ["三菱UFJ"], "display_name": ["8306 三菱UFJ"]})
+  csv_paths = ["./jpx_stocks.csv","/content/drive/MyDrive/Colab Notebooks/jpx_stocks.csv"]
+
+  for path in csv_paths:
+      try:
+          df = pd.read_csv(path, encoding="shift_jis")
+          # 表示用のラベル「8306 三菱UFJ銀行」を作成
+          df["display_name"] = df["コード"].astype(str) + " " + df["銘柄名"]
+          return df
+      except:
+          continue
+  st.error(f"CSVファイルが見つかりませんでした")
+  return pd.DataFrame({"コード": [8306], "銘柄名": ["三菱UFJ"], "display_name": ["8306 三菱UFJ"]})
 
 df_master = get_all_jpx_stocks()
 
