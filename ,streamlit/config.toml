@@ -5,5 +5,3 @@ secondaryBackgroundColor = "#262730"
 textColor = "#FAFAFA"
 font = "sans serif"
 base = "dark"
-[layout]
-wideMode = true
