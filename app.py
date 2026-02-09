@@ -39,7 +39,7 @@ with st.sidebar:
     st.header("表示設定")
 
     # 4000銘柄から検索して選択
-    default_codes = ["8306", "1802","2914","5334"]
+    default_codes = ["8306", "1802","2914","5334","8766","2802","8789"]
     selected_labels = st.multiselect(
         "銘柄を検索・選択",
         options=df_master["display_name"].tolist(),
