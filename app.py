@@ -29,6 +29,7 @@ df_master = get_all_jpx_stocks()
 BENCHMARKS = {
     "S&P": "https://www.amova-am.com/products/etf/files/etf/dailydata/etf-funddata-615471.csv",
     "TOPIX": "https://www.amova-am.com/products/etf/files/etf/dailydata/etf-funddata-113085.csv",
+    "Tracers50":"https://www.amova-am.com/api/fund-export?funds[]=945109",
     "GOLD":"https://www.amova-am.com/api/fund-export?funds[]=643718"
 }
 
