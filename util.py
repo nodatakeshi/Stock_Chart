@@ -15,7 +15,7 @@ BENCHMARKS = {
     }
 
 # --- 全銘柄リストの取得 ---
-#@st.cache_data
+@st.cache_data
 def get_all_jpx_stocks():
   csv_paths = ["/content/drive/MyDrive/Colab Notebooks/jpx_stocks.csv","./jpx_stocks.csv"]
 
@@ -68,6 +68,7 @@ def side_bar_set():
 
 
 #yfinanceからデータを取得する
+@st.cache_data
 def get_yfinance_datas(names, start_date):
   df_stocks = pd.DataFrame()
   tickers = [label.split(maxsplit=1)[0] + ".T" for label in names]
@@ -82,7 +83,7 @@ def get_yfinance_datas(names, start_date):
 
 
 #投信のサイトからcsvデータを取得する
-#@st.cache_data
+@st.cache_data
 def get_csv_datas(names, start_date):
     try:
       df_list=[]
@@ -199,27 +200,3 @@ def drop_display(df_stocks):
 
 
                 """, unsafe_allow_html=True)
-
-st.set_page_config(layout="wide")
-selected_labels, selected_benchmarks, start_date, normalize = side_bar_set()
-st.error(f"株価取得エラー: {start_date}")
-
-df_stocks = get_yfinance_datas(selected_labels, start_date)
-df_benchies = get_csv_datas(selected_benchmarks, start_date)
-
-st.markdown("### 📈 株価チャート")
-chart_display(df_stocks, df_benchies, normalize)
-st.write("---")
-
-st.subheader("📌 最新の市場・銘柄情報")
-st.markdown("#### 【個別銘柄】")
-price_display(df_stocks)
-st.write("") # 少し隙間を空ける
-st.markdown("#### 【ベンチマーク】")
-price_display(df_benchies)
-st.write("---")
-
-st.subheader("🛒 お買い得（急落）チェック")
-st.caption("直近1ヶ月の高値から現在何％値下がりしているか")
-util.drop_display(df_stocks)
-
