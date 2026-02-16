@@ -71,11 +71,11 @@ def side_bar_set():
 @st.cache_data
 def get_yfinance_datas(names, start_date):
   df_stocks = pd.DataFrame()
-  tickers = [label.split(maxsplit=1)[0] + ".T" for label in names]
   if names:
       try:
           tickers = [label.split(maxsplit=1)[0] + ".T" for label in names]
           df_stocks = yf.download(tickers, start=start_date)["Close"]
+          df_stocks = df_stocks.reindex(columns=tickers)#ticker順に並べ替え
           df_stocks.columns = [label for label in names]
       except Exception as e:
           st.error(f"株価取得エラー: {e}")
