@@ -40,7 +40,7 @@ def side_bar_set():
       df_master = get_all_jpx_stocks()
 
       # 4000銘柄から検索して選択
-      default_codes = ["8306", "1802","6758","5334","8766","2814","6701","8750"]
+      default_codes = ["8306", "1802","6758","5334","8766","2914","6701","8750"]
       selected_labels = st.multiselect(
           "銘柄を検索・選択",
           options = df_master["display_name"].tolist(),
